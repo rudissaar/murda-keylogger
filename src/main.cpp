@@ -2,6 +2,7 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QProcess>
 #include <QString>
 #include <QStringList>
 
@@ -47,6 +48,13 @@ int main(int argc, char *argv[])
 
     parser.addOption(getIntervalOption);
 
+    QCommandLineOption initOption(
+        QStringList() << "init",
+        QCoreApplication::translate("main", "Initialise the application.")
+    );
+
+    parser.addOption(initOption);
+
     QCommandLineOption sendOption(
         QStringList() << "send",
         QCoreApplication::translate("main", "Send the information.")
@@ -62,6 +70,16 @@ int main(int argc, char *argv[])
     parser.addOption(disposeOption);
 
     parser.process(app);
+
+    if (parser.isSet(initOption)) {
+        qint64 pid;
+        QProcess process;
+
+        process.setProgram(QCoreApplication::applicationFilePath());
+        process.startDetached(&pid);
+
+        return 0;
+    }
 
     QString outputHash;
     outputHash = parser.value(setHashOption);
