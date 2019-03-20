@@ -1,6 +1,9 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define SOFTWARE_VERSION "0.0.1"
+#define ORGANIZATION_ORG "rudissaar"
+#define ORGANIZATION_DOMAIN "murda.eu"
+#define APPLICATION_NAME "murda-keylogger"
+#define APPLICATION_VERSION "0.0.1"
 
 #endif // CONSTANTS_H

