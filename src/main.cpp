@@ -9,7 +9,7 @@
 #include <windows.h>
 
 #include "constants.h"
-#include "keylogger.h"
+#include "core.h"
 #include "wrapper.h"
 
 int main(int argc, char *argv[])

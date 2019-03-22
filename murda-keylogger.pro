@@ -8,13 +8,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
     src/constants.h \
-    src/keylogger.h \
-    src/wrapper.h
+    src/wrapper.h \
+    src/core.h
 
 SOURCES += \
     src/main.cpp \
-    src/keylogger.cpp \
-    src/wrapper.cpp
+    src/wrapper.cpp \
+    src/core.cpp
 
 OTHER_FILES += \
     .gitignore

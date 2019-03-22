@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "keylogger.h"
+#include "core.h"
 
 class Wrapper :
     public QWidget
