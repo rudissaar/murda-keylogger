@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include "constants.h"
 #include "core.h"
 
 class Wrapper :

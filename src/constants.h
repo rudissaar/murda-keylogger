@@ -4,6 +4,12 @@
 #define SLEEP 20
 #define BUILD_KEY "AAAABBBBCCCC"
 
+/**
+ * Trigger that enables extra Windows specific flags to make application more transparent,
+ * it also might alert some anti-virus programs about suspicious activity.
+ */
+#define EXTRA_TRANSPARENCY 0
+
 #define ORGANIZATION_ORG "rudissaar"
 #define ORGANIZATION_DOMAIN "murda.eu"
 #define APPLICATION_NAME "murda-keylogger"
