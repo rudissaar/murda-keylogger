@@ -3,12 +3,16 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QObject>
+#include <QStandardPaths>
 #include <QString>
 #include <QTimer>
 
 #include <windows.h>
+
+#include "constants.h"
 
 class Core :
     public QObject
