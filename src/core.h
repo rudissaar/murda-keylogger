@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QStandardPaths>
 #include <QString>
+#include <QTextStream>
 #include <QTimer>
 
 #include <windows.h>
@@ -21,6 +22,7 @@ class Core :
 
 public:
     explicit Core(QObject *parent = nullptr);
+    ~Core();
 
     static void update(BYTE *keyState, int keyCode);
     static LRESULT CALLBACK process (int nCode, WPARAM wParam, LPARAM lParam);

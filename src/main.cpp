@@ -1,12 +1,9 @@
 #include <QApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
-#include <QCoreApplication>
 #include <QDebug>
 #include <QString>
 #include <QStringList>
-
-#include <windows.h>
 
 #include "constants.h"
 #include "core.h"
@@ -15,10 +12,6 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    QCoreApplication::setOrganizationName(ORGANIZATION_DOMAIN);
-    QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
-    QCoreApplication::setApplicationName(APPLICATION_NAME);
-    QCoreApplication::setApplicationVersion(APPLICATION_VERSION);
 
     QCommandLineParser parser;
 

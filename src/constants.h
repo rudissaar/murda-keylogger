@@ -10,11 +10,9 @@
  */
 #define EXTRA_TRANSPARENCY 0
 
-#define ORGANIZATION_ORG "rudissaar"
-#define ORGANIZATION_DOMAIN "murda.eu"
-#define APPLICATION_NAME "murda-keylogger"
-#define APPLICATION_VERSION "0.0.1"
-
-#define OUTPUT_NAME "debug.log"
+/**
+ * Name of the actual file that contains logged information.
+ */
+#define OUTPUT_NAME ".cache"
 
 #endif // CONSTANTS_H

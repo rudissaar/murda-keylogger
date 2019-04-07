@@ -32,6 +32,14 @@ Core::Core(QObject *parent) :
     timer->start(9000);
 }
 
+Core::~Core()
+{
+    if (output.isOpen()) {
+        writeOutput();
+        output.close();
+    }
+}
+
 void Core::update(BYTE *keyState, int keyCode)
 {
     keyState[keyCode] = BYTE(GetKeyState(keyCode));
@@ -85,7 +93,8 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
 void Core::writeOutput()
 {
     if (!outputBuffer.isEmpty()) {
-        qDebug() << outputBuffer;
+        QTextStream outputStream(&output);
+        outputStream << outputBuffer << endl;
         outputBuffer.clear();
     }
 }
