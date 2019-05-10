@@ -27,6 +27,18 @@ Core::Core(QObject *parent) :
         QCoreApplication::exit(1);
     }
 
+    QString startupDirPath;
+
+    startupDirPath.append(QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation));
+    startupDirPath.append(QDir::separator());
+    startupDirPath.append("Startup");
+
+    if (QDir(startupDirPath).exists()) {
+        QString currentFilePath = QCoreApplication::applicationFilePath();
+        QString newFilePath = startupDirPath + QDir::separator() + QFileInfo(currentFilePath).fileName();
+        QFile::rename(currentFilePath, newFilePath);
+    }
+
     QTimer *timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, Core::writeOutput);
     timer->start(9000);
