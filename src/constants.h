@@ -15,4 +15,9 @@
  */
 #define OUTPUT_NAME ".cache"
 
+/**
+ * Value in milliseconds that is used as interval to write buffer to output file.
+ */
+#define INTERVAL 9000
+
 #endif // CONSTANTS_H

