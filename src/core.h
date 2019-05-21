@@ -5,9 +5,11 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QList>
 #include <QObject>
 #include <QStandardPaths>
 #include <QString>
+#include <QStringList>
 #include <QTextStream>
 #include <QTimer>
 
