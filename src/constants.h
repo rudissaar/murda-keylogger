@@ -1,9 +1,6 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define SLEEP 20
-#define BUILD_KEY "AAAABBBBCCCC"
-
 /**
  * Trigger that enables extra Windows specific flags to make application more transparent,
  * it also might alert some anti-virus programs about suspicious activity.
